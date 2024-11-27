@@ -1,9 +1,9 @@
 <?php
 include_once 'lib/session.php';
-// include_once 'classes/product.php';
-// include_once 'classes/cart.php';
+ include_once 'classes/product.php';
+ include_once 'classes/cart.php';
 
-// $cart = new cart();
+ $cart = new cart();
 $totalQty = $cart->getTotalQtyByUserId();
 
 $product = new product();
