@@ -1,159 +1,306 @@
 <?php
-include_once 'lib/session.php';
- include_once 'classes/product.php';
- include_once 'classes/cart.php';
+session_start();
+ob_start();
+// test commit
+require "./global.php";
+require ".$MODEL_URL/pdo.php";
+require ".$MODEL_URL/product.php";
+require ".$MODEL_URL/banner.php";
+require ".$MODEL_URL/taikhoan.php";
+require ".$MODEL_URL/category.php";
+require ".$MODEL_URL/comment.php";
+require ".$MODEL_URL/timkiemsp.php";
+require ".$MODEL_URL/orders.php";
+$action = isset($_GET['action']) ? $_GET['action'] : 'index';
+// echo $action;
+switch ($action) {
+  case 'test': 
+    require ".$VIEW_URL/test.php";
+    break;
+  case 'index';
+  // echo $action;
+    require ".$VIEW_URL/main.php";
+    break;
+  case 'orders_history': 
+    require ".$VIEW_URL/orders_history.php";
+  break;
+    // ----------San Pham---------------
+  case 'male-fashion':
+    require ".$VIEW_URL/male-fashion.php";
+    break;
+  case 'product_detail':
+    require ".$VIEW_URL/product_detail.php";
+    break;
+  case 'female-fashion':
+    require ".$VIEW_URL/female-fashion.php";
+    break;
+  case 'news-fashion':
+    require ".$VIEW_URL/news-fashion.php";
+    break;
+   case 'sale-fashion':
+    require ".$VIEW_URL/sale-fashion.php";
+    break;
+  // Bổ sung product DETAIL và chức năng add vào cart
+  case "order_purchased": 
+    require ".$VIEW_URL/orders.php";
+    break;
+  case 'check-quanity':
+    require ".$CONTROLLER_URL/check_product_quantity.php";
+    break;
+  case 'add_to_cart':
+    require ".$CONTROLLER_URL/add_to_cart.php";
+    break;
+   case 'product_add_quantity_to_cart':
+    require ".$CONTROLLER_URL/product_add_quantity_to_cart.php";
+    break;
+  case 'get_product_info':
+    require ".$CONTROLLER_URL/get_product_info.php";
+    break;
+  // ------------- Bình Luận --------------
+   case 'delete_bl':
+    require ".$CONTROLLER_URL/delete_bl.php";
+    break;
+  case 'update_bl':
+    require ".$CONTROLLER_URL/update_bl.php";
+    break;
 
- $cart = new cart();
-$totalQty = $cart->getTotalQtyByUserId();
+    // ------------Tài Khoản---------------
+    case 'login':
+    if (isset($_POST['login'])) {
+      $username = $_POST['username'];
+      $password = $_POST['password'];
 
-$product = new product();
-$list = mysqli_fetch_all($product->getFeaturedProducts(), MYSQLI_ASSOC);
-?>
-<?php
-    if (isset($_GET['search'])) {
-        $search = addslashes($_GET['search']);
-        if (empty($search)) {
-            echo '<script type="text/javascript">alert("Yêu cầu dữ liệu không được để trống!");</script>';
-        } else {
-            $list = $product->getProductByName($search);
-           
-        }
-    } 
-?>
+      $checkuser = checkuser($username, $password);
+      if (is_array($checkuser)) {
+        $_SESSION['username'] = $checkuser;
 
-<!DOCTYPE html>
-<html lang="en">
+        echo '<script>alert("Đăng nhập thành công")</script>';
+      } else {
+        echo '<script>alert("Tài khoản hoặc mật khẩu không tồn tại")</script>';
+      }
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <script src="https://use.fontawesome.com/2145adbb48.js"></script>
-    <script src="https://kit.fontawesome.com/a42aeb5b72.js" crossorigin="anonymous"></script>
-    <title>Trang chủ</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script>
-        $(function() {
-            $('.fadein img:gt(0)').hide();
-            setInterval(function() {
-                $('.fadein :first-child').fadeOut().next('img').fadeIn().end().appendTo('.fadein');
-            }, 1500);
-        });
-    </script>
-</head>
+    require ".$VIEW_URL/main.php";
+    break;
+  case 'quenmk':
+    if (isset($_POST['btnsubmit'])) {
+      $email  = $_POST['email'];
+      $checkemail = checkemail($email);
+      if (is_array($checkemail)) {
+        echo "<script>
+          alert('Mật khẩu của bạn là:"
+          . $checkemail['password'] .
+          "');
+          </script>";
+      } else {
+        echo '<script>alert("Email không khớp với email đã đăng ký!")</script>';
+      }
+    }
 
-<body>
-<nav>
-        <label class="logo"><a href="index.php">IVY Moda</a></label>
-        <ul id="dc_mega-menu-orange">
-            <li class="li-index"><a href="index.php" class="active">Trang chủ</a></li>
-            <li class="li-index"><a href="productList.php" >Sản phẩm</a></li>
+    require ".$VIEW_URL/main.php";
+    break;
+  case 'myaccount':
+    if (isset($_POST['thaydoi']) && ($_POST['thaydoi'])) {
+      $id = $_POST['id'];
+      $full_name = $_POST['full_name'];
+      $username = $_POST['username'];
+      $password = $_POST['password'];
+      $email = $_POST['email'];
+      $phone = $_POST['phone'];
+      $address = $_POST['address'];
+      update_taikhoan_home($full_name, $username, $password, $email, $address, $phone, $id);
+      $_SESSION['username'] = checkuser($username, $password);
+      echo '<script>alert("Bạn đã cập nhật thông tin thành công")</script>';
+    }
+    $listtaikhoan = loadall_taikhoan();
+    require ".$VIEW_URL/myaccount.php";
+    break;
 
-            <li class="li-index"><a href="order.php" id="order">Đơn hàng</a></li>
-                
-            <?php
-            if (isset($_SESSION['user']) && $_SESSION['user']) { ?>
-                <li class="li-index"><a href="info.php" id="signin">Thông tin cá nhân</a></li>
-                <li class="li-index"><a href="logout.php" id="signin">Đăng xuất</a></li>
-            <?php } else { ?>
-                <li class="li-index"><a href="register.php" id="signup">Đăng ký</a></li>
-                <li class="li-index"><a href="login.php" id="signin">Đăng nhập</a></li>
-            <?php } ?>
-        </ul>
-        <form class="c-search" action="" method="get">
-            <div class="header_search">
-                <input type="text" class="search_input" name="search" placeholder="Nhập tên sản phẩm">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <a class="cart" href="checkout.php">
-                    <i class="fa fa-shopping-cart"></i>
-                    <sup class="sumItem">
-                        <?= ($totalQty['total']) ? $totalQty['total'] : "0" ?>
-                    </sup>
-        </a>
-    </nav>
-    <section class="banner">
-        <div class="fadein">
-            <?php
-            // display images from directory
-            // directory path
-            $dir = "./images/slider/";
-            $scan_dir = scandir($dir);
-            foreach ($scan_dir as $img) :
-                if (in_array($img, array('.', '..')))
-                    continue;
-            ?>
-                <img src="<?php echo $dir . $img ?>" alt="<?php echo $img ?>">
-            <?php endforeach; ?>
-        </div>
-    </section>
-    <!-- <div class="featuredProducts">
-        <h1>Tất cả sản phẩm</h1>
-    </div> -->
-    <div class="title">
-    NEW ARRIVAL - SALE OFF 20% + QUÀ TẶNG 0Đ BÊN DƯỚI
-    </div>
+  case 'updatetk':
 
-    <div class="container" style="grid-template-columns: auto auto auto auto;">    
-        <?php
-        if ($list) {
-        foreach ($list as $key => $value) { ?>
-            <div class="card">
-                <div class="imgBx">
-                    <a href="detail.php?id=<?= $value['id'] ?>"><img src="admin/uploads/<?= $value['image'] ?>" alt="" title="<?= $value['name'] ?>"></a>
-                </div>
-                <div class="content">
-                    <div class="productName">
-                        <a href="detail.php?id=<?= $value['id'] ?>" title="<?= $value['name'] ?>">
-                            <h3><?= $value['name'] ?></h3>
-                        </a>
-                    </div>
-                    <div>
-                        Đã bán: <?= $value['soldCount'] ?>
-                    </div>
-                    <div class="bothPrice">
-                    <div class="price">
-                        <?= number_format($value['promotionPrice'], 0, '', ',') ?>đ
-                    </div>
-                    <div class="original-price">
-                        <?php
-                        if ($value['promotionPrice'] < $value['originalPrice']) { ?>
-                             <del><?= number_format($value['originalPrice'], 0, '', ',') ?>đ</del>
-                        <?php } else { ?>
-                            <p>...</p>
-                        <?php } ?>
-                    </div>
-                    </div>
-                    <div class="action">
-                        <a class="add-cart" href="add_cart.php?id=<?= $value['id'] ?>"><i class="fa fa-shopping-bag"></i></a>
-                        <!-- <a class="detail" href="detail.php?id=<?= $value['id'] ?>">Xem chi tiết</a> -->
-                    </div>
-                </div>
-            </div>
-        <?php }?>
-        <?php } else { ?>
-            <h3>Chưa có sản phẩm nào...</h3>
-        <?php } ?>
-    </div>
-    <footer>
-        <div class="social">
-            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-        </div>
-        <ul class="list">
-            <li>
-                <a href="./">Trang Chủ</a>
-            </li>
-            <li>
-                <a href="productList.php">Sản Phẩm</a>
-            </li>
-        </ul>
-        <p class="copyright">copy by IVYmoda.com 2024</p>
-    </footer>
-</body>
+    if (isset($_POST['thaydoi']) && ($_POST['thaydoi'])) {
+      $id = $_POST['id'];
+      $full_name = $_POST['full_name'];
+      $username = $_POST['username'];
+      $password = $_POST['password'];
+      $email = $_POST['email'];
+      $phone = $_POST['phone'];
+      $address = $_POST['address'];
+      $full_name = $_POST['full_name'];
+      $role = $_POST['role'];
+      update_taikhoan($id, $full_name, $username, $password, $email, $address, $phone, $role);
+      $_SESSION['username'] = checkuser($username, $password);
+      echo '<script>alert("Bạn đã cập nhật thông tin thành công")</script>';
+      // header('location: index.php?act=myaccount');
+      // $thongbao = "Bạn đã cập nhật thông tin thành công";
+    }
+    require ".$VIEW_URL/myaccount.php";
+    break;
+  case 'thoat':
+    session_unset();
+    header('Location: index.php');
+    break;
+  case 'timkiem':
+    if (isset($_POST['timkiem'])) {
+      $tukhoa = $_POST['tukhoa'];
+    }
+    require ".$VIEW_URL/timkiem.php";
+    break;
 
-</html>
+
+
+
+
+     // ------------Bộ lọc----------
+  case 'ao_new':
+    require ".$VIEW_URL/boloc/ao-new.php";
+    break;
+  case 'vay_new':
+    require ".$VIEW_URL/boloc/vay-new.php";
+    break;
+  case 'quan_new':
+    require ".$VIEW_URL/boloc/quan-new.php";
+    break;
+  case 'ao_sale':
+    require ".$VIEW_URL/boloc/ao-sale.php";
+    break;
+  case 'vay_sale':
+    require ".$VIEW_URL/boloc/vay-sale.php";
+    break;
+  case 'quan_sale':
+    require ".$VIEW_URL/boloc/quan-sale.php";
+    break;
+  case 'aosomi':
+    require ".$VIEW_URL/boloc/ao-so-mi.php";
+    break;
+  case 'aothun':
+    require ".$VIEW_URL/boloc/ao-thun.php";
+    break;
+  case 'hoodie':
+    require ".$VIEW_URL/boloc/hoodie.php";
+    break;
+  case 'quannam':
+    require ".$VIEW_URL/boloc/quannam.php";
+    break;
+  case 'aonam':
+    require ".$VIEW_URL/boloc/ao-nam.php";
+    break;
+  case 'polo':
+    require ".$VIEW_URL/boloc/polo.php";
+    break;
+  case 'aonu':
+    require ".$VIEW_URL/boloc/ao-nu.php";
+    break;
+  case 'quannu':
+    require ".$VIEW_URL/boloc/quan-nu.php";
+    break;
+  case 'vaynu':
+    require ".$VIEW_URL/boloc/vay-nu.php";
+    break;
+  case 'price_filter':
+    require ".$VIEW_URL/boloc/loc-giatien-all.php";
+    break;
+  case 'price_filter_new':
+    require ".$VIEW_URL/boloc/loc-giatien-new.php";
+    break;
+  case 'price_filter_sale':
+    require ".$VIEW_URL/boloc/loc-giatien-sale.php";
+    break;
+  case 'price_filter_nam':
+    require ".$VIEW_URL/boloc/loc-giatien-nam.php";
+    break;
+  case 'price_filter_nu':
+    require ".$VIEW_URL/boloc/loc-giatien-nu.php";
+    break;
+  case 'size_filter':
+    require ".$VIEW_URL/boloc/loc-size-all.php";
+    break;
+  case 'size_filter_sale':
+    require ".$VIEW_URL/boloc/loc-size-sale.php";
+    break;
+  case 'size_filter_new':
+    require ".$VIEW_URL/boloc/loc-size-new.php";
+    break;
+  case 'size_filter_nam':
+    require ".$VIEW_URL/boloc/loc-size-nam.php";
+    break;
+  case 'size_filter_nu':
+    require ".$VIEW_URL/boloc/loc-size-nu.php";
+    break;
+  case 'color_filter_nam':
+    require ".$VIEW_URL/boloc/mau-sac-nam.php";
+    break;
+  case 'color_filter_nu':
+    require ".$VIEW_URL/boloc/mau-sac-nu.php";
+    break;
+  case 'color_filter':
+    require ".$VIEW_URL/boloc/mau-sac-all.php";
+    break;
+  case 'color_filter_new':
+    require ".$VIEW_URL/boloc/mau-sac-new.php";
+    break;
+  case 'color_filter_sale':
+    require ".$VIEW_URL/boloc/mau-sac-sale.php";
+    break;
+  
+   // -----------Product detail and cart--------------
+  case 'check-quanity':
+    require ".$CONTROLLER_URL/check_product_quantity.php";
+    break;
+  case 'add_to_cart':
+    require ".$CONTROLLER_URL/add_to_cart.php";
+    break;
+  case 'reload_cart':
+    require ".$INCLUDES_URL/cart_modal.php";
+    break;
+  case 'update_quantity_product':
+    require ".$CONTROLLER_URL/update_quantity_in_cart.php";
+    break;
+  case 'order-detail':
+    require ".$VIEW_URL/order_detail.php";
+    break;
+  case 'view-cart':
+    require ".$VIEW_URL/view-cart.php";
+    break;
+  case 'load_cart':
+    require ".$CONTROLLER_URL/return_data_cart.php";
+    break;
+  case 'product_add_quantity_to_cart':
+    require ".$CONTROLLER_URL/product_add_quantity_to_cart.php";
+    break;
+  case 'product_delete_quantity_to_cart':
+    require ".$CONTROLLER_URL/delete_product_in_cart.php";
+    break;
+  case 'show_quantity_in_cart':
+    require ".$CONTROLLER_URL/return_cart_quantity.php";
+    break;
+  case 'get_customer_info':
+    require ".$CONTROLLER_URL/get_customer_info.php";
+    break;
+  case 'order_handle':
+    require ".$CONTROLLER_URL/progress_order.php";
+    break;
+  case 'get_product_info':
+    require ".$CONTROLLER_URL/get_product_info.php";
+    break;
+  case 'order_details_infomation':
+    require ".$VIEW_URL/order_details_infomation_load.php";
+    break;
+  case 'get_anomyous_customer_info':
+    require ".$CONTROLLER_URL/get_anomyous_customer_info.php";
+    break;
+  case 'cancel_order':
+    require ".$CONTROLLER_URL/cancel_order.php";
+    break;
+  case 'thanks':
+    require ".$VIEW_URL/thanks.php";
+    break;
+  case 'receive':
+    require ".$CONTROLLER_URL/receive.php";
+    break;
+
+  default:
+    echo 'Đang làm thêm trang 404';
+    break;
+}
+
