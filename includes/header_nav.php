@@ -70,6 +70,11 @@
         <img src="../<?= $ROOT_URL ?>/asset/images/routine_log.png" alt="" class="header-logo-img" />
       </a>
     </div>
+    <?php if(isset($_SESSION['username']) && ($_SESSION['username']['role'] == 1)) : ?>
+      <li class="header-nav-item">
+      <a class="header-nav-link" href="/du_an1/admin">Quản trị</a>
+    </li>
+    <?php endif ?>
     <li class="header-nav-item">
       <a class="header-nav-link" href="/du_an1/male-fashion?page=1">NAM</a>
     </li>
@@ -82,6 +87,7 @@
     <li class="header-nav-item">
       <a class="header-nav-link" href="/du_an1/sale-fashion?page=1">SALE</a>
     </li>
+    
   </ul>
   <div class="header-content-right">
     <div class="header-search-bar">

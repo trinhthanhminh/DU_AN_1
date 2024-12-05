@@ -33,9 +33,11 @@
             } else {
                 $_SESSION['cart'][$variantKey]['remainingAmount'] = $quantities_result['quantity'];
                 $check_quantity = $quantities_result['quantity'];
-
-                if ($_SESSION['cart'][$variantKey]['quantity'] < $check_quantity) {
-                    $_SESSION['cart'][$variantKey]['quantity']++;
-                }
+                $check_stock = ($_SESSION['cart'][$variantKey]['quantity'] + $quantity) > $check_quantity;
+                    if ($_SESSION['cart'][$variantKey]['quantity'] < $check_quantity && !$check_stock) {
+                        $_SESSION['cart'][$variantKey]['quantity'] = $_SESSION['cart'][$variantKey]['quantity']  +$quantity;
+                    }else{
+                        $_SESSION['cart'][$variantKey]['quantity'] = $check_quantity;
+                    }
             }
         }
