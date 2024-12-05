@@ -169,7 +169,7 @@
                 <a href="./index.php?action=product_detail&product_id=<?= $value['product_id'] ?>" class="product-name">
                   <?= $value['product_name'] ?>
                 </a>
-                <i class="fa-regular fa-heart product-icon"></i>
+                <!-- <i class="fa-regular fa-heart product-icon"></i> -->
               </div>
               <div class="product-price">
                 <!-- format tiền tệ việt nam -->

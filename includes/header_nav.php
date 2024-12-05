@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header nav-active" style="justify-content: space-between;">
   <div class="header-menu-sidebar">
     <ul class="header-menu-top-title">
       <li><a href="/du_an1/male-fashion" class="menu-sidebar-active">NAM</a></li>
@@ -49,7 +49,7 @@
           <li id="open-modal-btn"> <a style="color: #000; text-decoration: none;" href="../../du_an1/index.php?action=thoat">ĐĂNG XUẤT</a> </li>
           <li id="open-modal-btn"> <a style="color: #000; text-decoration: none;" href="../../du_an1/index.php?action=myaccount">MY ACCOUNT</a> </li>
         <?php endif; ?>
-      <?php endif; ?>
+      <?php endif; ?> 
     </ul>
   </div>
   <!-- Hidden when scoll -->

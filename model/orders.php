@@ -27,7 +27,7 @@ function add_order_product($order_id, $product_id, $size_id, $color_name_id, $qu
 }
 function select_all_orders()
 {
-    $sql = "SELECT orders.* FROM orders";
+    $sql = "SELECT orders.* FROM orders ORDER BY created_at DESC";
     return pdo_query($sql);
 }
 function select_all_order_product_admin_by_id($order_id)
@@ -43,7 +43,8 @@ function select_status_by_id($status_id)
     $sql = "SELECT * FROM status WHERE status_id = ?";
     return pdo_query_one($sql, $status_id);
 }
-function select_all_status(){
+function select_all_status()
+{
     $sql = "SELECT * FROM status";
     return pdo_query($sql);
 }
@@ -57,9 +58,10 @@ function select_order_by_id($order_id)
     $sql = "SELECT * FROM orders WHERE order_id = ?";
     return pdo_query_one($sql, $order_id);
 }
-function orders_update($status_id,$order_id){
+function orders_update($status_id, $order_id)
+{
     $sql = "UPDATE orders SET status_id = ? WHERE order_id = ?";
-    pdo_execute($sql,$status_id,$order_id);
+    pdo_execute($sql, $status_id, $order_id);
 }
 function select_all_order_product_by_order_id($order_id)
 {
@@ -146,14 +148,16 @@ function delete_orders_by_order_id($order_id)
     $sql = "DELETE FROM orders WHERE order_id = ?";
     pdo_execute($sql, $order_id);
 }
-function update_completed($time,$order_id){
+function update_completed($time, $order_id)
+{
     $sql = "UPDATE orders SET completed_at = ? WHERE order_id = ?";
-    pdo_execute($sql,$time,$order_id);
+    pdo_execute($sql, $time, $order_id);
 }
-function add_purchased_orders($customer_id, $product_id, $size_id, $color_name_id,$quantity, $created_at, $completed_at, $customer_email, $customer_phone_number, $total_price){
+function add_purchased_orders($customer_id, $product_id, $size_id, $color_name_id, $quantity, $created_at, $completed_at, $customer_email, $customer_phone_number, $total_price)
+{
     $sql = "INSERT INTO purchased_orders(customer_id, product_id, size_id, color_name_id,quantity, created_at, completed_at, customer_email, customer_phone_number, total_price) 
     VALUES (?,?,?,?,?,?,?,?,?,?)";
-    pdo_execute($sql,$customer_id, $product_id, $size_id, $color_name_id,$quantity, $created_at, $completed_at, $customer_email, $customer_phone_number, $total_price);
+    pdo_execute($sql, $customer_id, $product_id, $size_id, $color_name_id, $quantity, $created_at, $completed_at, $customer_email, $customer_phone_number, $total_price);
 }
 
 function select_all_product_by_d($product_id)
@@ -165,21 +169,24 @@ function select_all_product_by_d($product_id)
 
 function sum_product_quantities()
 {
-    $sql="SELECT SUM(quantity) as soluongton, product_id FROM quantities GROUP BY product_id";
+    $sql = "SELECT SUM(quantity) as soluongton, product_id FROM quantities GROUP BY product_id";
     return pdo_query($sql);
 }
 
-function sum_product_quantities_by_id($product_id){
-    $sql="SELECT SUM(quantity) as soluongton, product_id FROM quantities where product_id=$product_id GROUP BY product_id";
+function sum_product_quantities_by_id($product_id)
+{
+    $sql = "SELECT SUM(quantity) as soluongton, product_id FROM quantities where product_id=$product_id GROUP BY product_id";
     return pdo_query_one($sql);
 }
-function total(){
-    $sql='SELECT SUBSTR(created_at, 6, 2) as thang,SUBSTR(created_at, 9, 2) as ngay, SUM(total_price) as tong, created_at FROM `purchased_orders`';
+function total()
+{
+    $sql = 'SELECT SUBSTR(created_at, 6, 2) as thang,SUBSTR(created_at, 9, 2) as ngay, SUM(total_price) as tong, created_at FROM `purchased_orders`';
     return pdo_query_one($sql);
 }
 
-function doanhthu_ngay(){
-    $sql='SELECT SUBSTR(created_at, 6, 2) 
+function doanhthu_ngay()
+{
+    $sql = 'SELECT SUBSTR(created_at, 6, 2) 
     as thang,SUBSTR(created_at, 9, 2) 
     as ngay,total_price,purchased_order_id,sum(total_price) 
     as doanhthungay 
@@ -188,8 +195,9 @@ function doanhthu_ngay(){
     return pdo_query($sql);
 }
 
-function doanhthu_thang(){
-    $sql='SELECT SUBSTR(created_at, 6, 2) as thang,SUBSTR(created_at, 9, 2) 
+function doanhthu_thang()
+{
+    $sql = 'SELECT SUBSTR(created_at, 6, 2) as thang,SUBSTR(created_at, 9, 2) 
     as ngay,total_price,purchased_order_id,sum(total_price) 
     as doanhthuthang 
     FROM `purchased_orders` 
@@ -200,7 +208,7 @@ function doanhthu_thang(){
 
 function sum_product_order($product_id)
 {
-    $sql="SELECT SUM(quantity) as soluongban, product_id FROM `purchased_orders` WHERE product_id = $product_id GROUP BY product_id;";
+    $sql = "SELECT SUM(quantity) as soluongban, product_id FROM `purchased_orders` WHERE product_id = $product_id GROUP BY product_id;";
     return pdo_query_one($sql);
 }
 

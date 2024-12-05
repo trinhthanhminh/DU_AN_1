@@ -1,19 +1,18 @@
 <?php require "./includes/header.php" ?>
 
 <!-- ĐĂNG NHẬP -->
-<?php require './includes/register_modal.php'?>
+<?php require './includes/register_modal.php' ?>
 
-<?php require './includes/login_modal.php'?>
-        <?php require './includes/forgot_pass.php'?>
-<!-- Nav -->
-<div></div>
+<?php require './includes/login_modal.php' ?>
+<?php require './includes/forgot_pass.php' ?>
 <!-- Nav -->
 <!-- end sign-up -->
 <!--  favoriteProduct-->
 <?php require "./includes/favorite_product.php" ?>
 <!-- end -->
 <!-- Start Cart -->
-<?php require "./includes/cart_modal.php" ?>
+<!-- <?php require "./includes/cart_modal.php" ?> -->
+
 <?php require ".$INCLUDES_URL/delete_cart_confirm.php" ?>
 
 <!-- sign in -->
@@ -43,10 +42,10 @@
         <i class="fa-solid fa-filter"></i>
       </div>
       <?php  // Lấy tổng số sản phẩm
-          $category_id = 2;
-          $totalProducts = count_all_products($category_id);?>
+      $category_id = 2;
+      $totalProducts = count_all_products($category_id); ?>
       <div class="view-function">
-      <strong><?php echo $totalProducts?></strong> sản phẩm 
+        <strong><?php echo $totalProducts ?></strong> sản phẩm
       </div>
       <div class="sort-function">
         Sắp xếp
@@ -111,11 +110,11 @@
                 <span class="product-oldPrice"><?= $product_vn_price ?></span>
               </div>
               <span class="product-newProduct">
-                <?php if ($value['product_status']==1) {?>
-                    <img src="../<?= $ROOT_URL ?>/asset/images/Label_New_Arrivals_14T7.png" alt="" />
-                <?php }elseif($value['product_status']==2){?>
-                    <img src="../<?= $ROOT_URL ?>/asset/images/sale-sinh-nhat-routine-10-tuoi.png" alt="" />
-                <?php }?> 
+                <?php if ($value['product_status'] == 1) { ?>
+                  <img src="../<?= $ROOT_URL ?>/asset/images/Label_New_Arrivals_14T7.png" alt="" />
+                <?php } elseif ($value['product_status'] == 2) { ?>
+                  <img src="../<?= $ROOT_URL ?>/asset/images/sale-sinh-nhat-routine-10-tuoi.png" alt="" />
+                <?php } ?>
               </span>
               <span class="product-discount"> -<?= $value['discount']; ?>% </span>
               <!-- Select color by product -->

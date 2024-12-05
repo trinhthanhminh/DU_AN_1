@@ -178,16 +178,17 @@
               <!-- end box size -->
               <!-- Hiện thị số lượng sản phẩm đang chọn -->
               <span class="product_detail_choose_quantity">Bạn có thể chỉnh số lượng sản phẩm trong giỏ hàng</span>
+          
               <div class="product-detail-toCart-field">
                 <!-- box số lượng sản phẩm còn lại -->
                 <input type="hidden" disabled value="2" id="product_detail_contain_quantity">
                 <!-- end -->
                 <div class="product-detail-inc">
- 
+                  <i class="fa-solid fa-minus product-detail-inc-minus" id="product-detail-inc-minus"></i>
                   <input type="number" disabled value="1" id="product-detail-inc-quantity" class="product-detail-inc-quantity" />
-                 
+                  <i class="fa-solid fa-plus product-detail-inc-plus" id="product-detail-inc-plus " class="cartModal-inc-plus"></i>
                 </div>
-                <button type="button" id="addToCart" class="product-detail-toCart">Mua ngay</button>
+                <button type="button" id="addToCart" class="product-detail-toCart">Mua Ngay</button>
                 <i class="fa-regular fa-heart product-detail-favorite"></i>
               </div>
               <span id="quantity_product"></span>

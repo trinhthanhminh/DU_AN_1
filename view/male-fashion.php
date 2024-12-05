@@ -1,7 +1,29 @@
 <?php require "./includes/header.php" ?>
+
+<!-- ĐĂNG NHẬP -->
+<?php require './includes/register_modal.php' ?>
+
+<?php require './includes/login_modal.php' ?>
+<?php require './includes/forgot_pass.php' ?>
+<!-- Nav -->
+<!-- Nav -->
+<!-- end sign-up -->
+<!--  favoriteProduct-->
+<?php require "./includes/favorite_product.php" ?>
+<!-- end -->
+<!-- Start Cart -->
+<!-- <?php require "./includes/cart_modal.php" ?> -->
+
+<?php require ".$INCLUDES_URL/delete_cart_confirm.php" ?>
+
+<!-- sign in -->
+
+<!-- Nav -->
+<!-- end sign in -->
+
 <?php require "./includes/header_nav.php" ?>
-<?php require './includes/login_modal.php'?>
-<?php require './includes/register_modal.php'?>
+
+
 <div class="wrapper">
   <ul class="breadcrumbs">
     <li>Trang chủ /</li>
@@ -70,7 +92,7 @@
                 <a href="./index.php?action=product_detail&product_id=<?= $value['product_id'] ?>" class="product-name">
                   <?= $value['product_name'] ?>
                 </a>
-                <i class="fa-regular fa-heart product-icon"></i>
+                <!-- <i class="fa-regular fa-heart product-icon"></i> -->
               </div>
               <div class="product-price">
                 <!-- format tiền tệ việt nam -->

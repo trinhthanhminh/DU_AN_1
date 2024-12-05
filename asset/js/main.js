@@ -99,7 +99,7 @@ function hiddenMenubar() {
     }
   };
 }
-hiddenMenubar();
+// hiddenMenubar();
 
 function hiddenOverlay() {
   overlay.style.display = `none`;

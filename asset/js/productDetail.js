@@ -197,6 +197,7 @@ $(document).ready(function () {
       // let productId = $("#submitSize").attr("product_id");
       let currentQuantity = $(`${inputValue}`).val();
       let remainingAmount = $(`${productQuantityValue}`).val();
+
       $.ajax({
         type: "POST",
         url: "../../du_an1/index.php?action=product_add_quantity_to_cart",
@@ -543,16 +544,20 @@ $(document).ready(function () {
                   <i class="fa-solid fa-xmark"></i>
               </div>
           </div>`;
-          
-          const orderDetailDiscount =
-          item.product_price -
-          (item.product_price * item.discount) / percent;
-        const orderDetailNewPriceFormatted = formatMoney("vi-VN", "VND", orderDetailDiscount);
-        const orderDetailOldPriceFormatted = formatMoney(
-          "vi-VN",
-          "VND",
-          item.product_price
-        );
+
+              const orderDetailDiscount =
+                item.product_price -
+                (item.product_price * item.discount) / percent;
+              const orderDetailNewPriceFormatted = formatMoney(
+                "vi-VN",
+                "VND",
+                orderDetailDiscount
+              );
+              const orderDetailOldPriceFormatted = formatMoney(
+                "vi-VN",
+                "VND",
+                item.product_price
+              );
               productDetailInfo += `<div class="favoriteProduct-info order">
           <a href="" class="favoriteProduct-img">
               <div class="favoriteProduct-img-first">
@@ -598,7 +603,7 @@ $(document).ready(function () {
         // console.log(productDetailInfo);
         // console.log(productInfo);
         $("#product-cart-bottom-container").html(cartTotalInfo);
-        if(cartItems === ""){
+        if (cartItems === "") {
           $("#btn-pay").hide();
           $(".checkout__oder__quantity_value").text("0");
           $(".checkout__order__provisional__rice__value").text("0");
