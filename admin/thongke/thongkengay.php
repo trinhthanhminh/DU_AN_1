@@ -46,16 +46,17 @@
 foreach ($doanhthu as $key) {
     $ngay[]= $key['ngay'];
     $doanhthungay[]=$key['doanhthungay'];
+    $thang[] = $key['thang'];
+    $nam[] = $key['nam'];
+    $soluongdonhang[]= $key['soluongdonhang'];
 }
-                
-        
+$labels = [];
+$countOrderInDay = [];
+foreach ($ngay as $index => $day) {
+    $labels[] = $day . '-' . $thang[$index] . '-' . $nam[$index];  // Tạo label theo định dạng "YYYY-MM-DD"
+    $countOrderInDay[] = $soluongdonhang[$index];
+}
         ?>
-
-
-
-
-
-
         <div class="container" style='width:100%;'>
     <canvas id="myChart"></canvas>
         </div>
@@ -75,7 +76,7 @@ foreach ($doanhthu as $key) {
     let massPopChart = new Chart(myChart, {
       type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
       data:{
-        labels:<?php echo json_encode($ngay)?>,
+        labels:<?php echo json_encode($labels)?>,
         datasets:[{
           label:'doanh thu',
           data:<?php echo json_encode($doanhthungay)?>,
@@ -120,7 +121,8 @@ foreach ($doanhthu as $key) {
           enabled:true,
           callbacks: {
           label: function(tooltipItem, data) {
-              return tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            var soluongdonhang = <?php echo json_encode($soluongdonhang); ?>;
+              return 'Doanh thu: ' + tooltipItem.yLabel.toLocaleString('vi-VN') +' số lượng đơn: ' + soluongdonhang[tooltipItem.index] ;
           }
       }
         }

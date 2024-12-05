@@ -45,10 +45,14 @@
                     $doanhthu = doanhthu_thang();
         foreach ($doanhthu as $key) {
             $thang[]= $key['thang'];
+            $nam[] = $key['nam'];
             $doanhthuthang[]=$key['doanhthuthang'];
+            $soluongdonhang[] = $key['soluongdonhang'];
         }
-                
-        
+        $labels = [];
+        foreach ($thang as $index => $month) {
+          $labels[] = $month . '-' . $nam[$index];  // Tạo label theo định dạng "YYYY-MM-DD"
+      };
         ?>
 
 
@@ -75,7 +79,7 @@
     let massPopChart = new Chart(myChart, {
       type:'bar', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
       data:{
-        labels:<?php echo json_encode($thang)?>,
+        labels:<?php echo json_encode($labels)?>,
         datasets:[{
           label:'doanh thu',
           data:<?php echo json_encode($doanhthuthang)?>,
@@ -120,8 +124,9 @@
         tooltips:{
           enabled:true,
           callbacks: {
-          label: function(tooltipItem, data) {
-              return tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            label: function(tooltipItem, data) {
+            var soluongdonhang = <?php echo json_encode($soluongdonhang); ?>;
+              return 'Doanh thu: ' + tooltipItem.yLabel.toLocaleString('vi-VN') +' số lượng đơn: ' + soluongdonhang[tooltipItem.index] ;
           }
       }
         }
