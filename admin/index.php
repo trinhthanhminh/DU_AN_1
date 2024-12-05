@@ -4,10 +4,10 @@ require "../global.php";
 require "..$MODEL_URL/pdo.php";
 require "..$MODEL_URL/product.php";
 require "..$MODEL_URL/banner.php";
-require "../$MODEL_URL/category.php";
-require "../$MODEL_URL/taikhoan.php";
-require "../$MODEL_URL/comment.php";
-require "../$MODEL_URL/orders.php";
+require "..$MODEL_URL/category.php";
+require "..$MODEL_URL/taikhoan.php";
+require "..$MODEL_URL/comment.php";
+require "..$MODEL_URL/orders.php";
 
 if (isset($_SESSION['username']) && ($_SESSION['username']['role'] == 1)) {
     $act = isset($_GET['act']) ? $_GET['act'] : 'index';
