@@ -107,13 +107,13 @@ function count_email_and_phone_number($email, $phone_number)
 function select_orders_by_email_and_phone_number($email, $phone_number)
 {
     $sql = "SELECT * FROM orders 
-    WHERE orders.receiver_email = ? AND orders.receiver_number_phone = ?";
+    WHERE orders.receiver_email = ? AND orders.receiver_number_phone = ?  ORDER BY orders.created_at DESC";
     return pdo_query($sql, $email, $phone_number);
 }
 function select_orders_by_email_and_phone_number_status($email, $phone_number, $status)
 {
     $sql = "SELECT * FROM orders 
-    WHERE orders.receiver_email = ? AND orders.receiver_number_phone = ? AND orders.status_id = ?";
+    WHERE orders.receiver_email = ? AND orders.receiver_number_phone = ? AND orders.status_id = ?  ORDER BY orders.created_at DESC";
     return pdo_query($sql, $email, $phone_number, $status);
 }
 
@@ -132,10 +132,12 @@ function select_quantity_order_product($order_id)
 }
 function select_product_order_product($order_id)
 {
-    $sql = "SELECT products.*,order_product.* FROM orders 
-    JOIN order_product ON orders.order_id = order_product.order_id 
-    JOIN products ON products.product_id = order_product.product_id 
-    WHERE orders.order_id = ? ";
+    $sql = "SELECT products.*, order_product.* 
+        FROM orders
+        JOIN order_product ON orders.order_id = order_product.order_id 
+        JOIN products ON products.product_id = order_product.product_id 
+        WHERE orders.order_id = ?
+        ORDER BY orders.created_at DESC";
     return pdo_query($sql, $order_id);
 }
 function delete_order_product_by_order_id($order_id)
@@ -184,7 +186,8 @@ function total()
     return pdo_query_one($sql);
 }
 
-function doanhthu_ngay(){
+function doanhthu_ngay()
+{
     $sql = "
     SELECT 
         SUBSTR(created_at, 1, 4) AS nam,
@@ -202,8 +205,9 @@ function doanhthu_ngay(){
 }
 
 
-function doanhthu_thang(){
-    $sql='SELECT SUBSTR(created_at, 1, 4) AS nam, SUBSTR(created_at, 6, 2)  as thang,SUBSTR(created_at, 9, 2) 
+function doanhthu_thang()
+{
+    $sql = 'SELECT SUBSTR(created_at, 1, 4) AS nam, SUBSTR(created_at, 6, 2)  as thang,SUBSTR(created_at, 9, 2) 
     as ngay,total_price,purchased_order_id,sum(total_price) 
     as doanhthuthang,
     COUNT(purchased_order_id) AS soluongdonhang
