@@ -25,10 +25,11 @@ $(document).ready(function () {
         },
         dataType: "json",
         success: function (responve) {
+          console.log(responve)
           $(".status_name").attr("status", `${responve.status_id}`);
           $(".status_name").text(responve.status);
           fillColorStatus();
-          console.log(responve);
+          window.location.reload()
         },
         error: function (error) {
           console.log(error);

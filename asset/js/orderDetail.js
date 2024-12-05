@@ -163,7 +163,7 @@ $(document).ready(function () {
           orderStatus : statusId
         },
         success: function (responve) {
-          // console.log(responve);
+          console.log(responve);
           location.href= './order_details_infomation?id=4'
           console.log("Xác nhận đơn hàng thành công");
         },
