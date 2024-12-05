@@ -179,19 +179,28 @@ function total(){
 }
 
 function doanhthu_ngay(){
-    $sql='SELECT SUBSTR(created_at, 6, 2) 
-    as thang,SUBSTR(created_at, 9, 2) 
-    as ngay,total_price,purchased_order_id,sum(total_price) 
-    as doanhthungay 
-    FROM `purchased_orders` 
-    group by SUBSTR(created_at, 9, 2)';
+    $sql = "
+    SELECT 
+        SUBSTR(created_at, 1, 4) AS nam,
+        SUBSTR(created_at, 6, 2) AS thang,
+        SUBSTR(created_at, 9, 2) AS ngay,
+        SUM(total_price) AS doanhthungay,
+        COUNT(purchased_order_id) AS soluongdonhang
+    FROM purchased_orders
+    GROUP BY 
+        SUBSTR(created_at, 1, 4), 
+        SUBSTR(created_at, 6, 2), 
+        SUBSTR(created_at, 9, 2)
+    ";
     return pdo_query($sql);
 }
 
+
 function doanhthu_thang(){
-    $sql='SELECT SUBSTR(created_at, 6, 2) as thang,SUBSTR(created_at, 9, 2) 
+    $sql='SELECT SUBSTR(created_at, 1, 4) AS nam, SUBSTR(created_at, 6, 2)  as thang,SUBSTR(created_at, 9, 2) 
     as ngay,total_price,purchased_order_id,sum(total_price) 
-    as doanhthuthang 
+    as doanhthuthang,
+    COUNT(purchased_order_id) AS soluongdonhang
     FROM `purchased_orders` 
     group by SUBSTR(created_at, 6, 2)';
     return pdo_query($sql);
