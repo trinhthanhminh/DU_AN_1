@@ -122,7 +122,7 @@ foreach ($ngay as $index => $day) {
           callbacks: {
           label: function(tooltipItem, data) {
             var soluongdonhang = <?php echo json_encode($soluongdonhang); ?>;
-              return 'Doanh thu: ' + tooltipItem.yLabel.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') +' số lượng đơn: ' + soluongdonhang[tooltipItem.index] ;
+              return 'Doanh thu: ' + tooltipItem.yLabel.toLocaleString('vi-VN') +' số lượng đơn: ' + soluongdonhang[tooltipItem.index] ;
           }
       }
         }
